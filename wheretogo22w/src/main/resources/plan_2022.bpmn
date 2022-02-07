@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_07bgxo0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.14.0">
+  <bpmn:process id="asteroid_padaje_na_zemliu" name="Астреоїд падає на Землю, наші діії?" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:formData businessKey="lookup">
+          <camunda:formField id="decisia" type="enum">
+            <camunda:value id="znyschyty" name="знищити астероїд" />
+            <camunda:value id="rozpyl" name="розпилити астероїд" />
+            <camunda:value id="tormozym" name="тормозимо" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0dsmrcn</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_upload_rockets_with_bombs" name="завантажити ракети вибухівкою">
+      <bpmn:incoming>Flow_05ravrd</bpmn:incoming>
+      <bpmn:outgoing>Flow_0x3u852</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Event_the_end">
+      <bpmn:incoming>Flow_1log3b2</bpmn:incoming>
+      <bpmn:incoming>Flow_0khxkv3</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0x3u852" sourceRef="Activity_upload_rockets_with_bombs" targetRef="Gateway_1ndje34" />
+    <bpmn:task id="Activity_destroi" name="запустити ракети по астероїду">
+      <bpmn:incoming>Flow_0hfupyo</bpmn:incoming>
+      <bpmn:outgoing>Flow_06zkzer</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_06zkzer" sourceRef="Activity_destroi" targetRef="Gateway_1i3ywts" />
+    <bpmn:sequenceFlow id="Flow_05ravrd" sourceRef="Activity_build_rokets" targetRef="Activity_upload_rockets_with_bombs" />
+    <bpmn:sequenceFlow id="Flow_0dsmrcn" sourceRef="StartEvent_1" targetRef="Gateway_05tf4do" />
+    <bpmn:task id="Activity_upload_rockets_with_robots" name="завантажити ракети роботами">
+      <bpmn:incoming>Flow_0acpiwh</bpmn:incoming>
+      <bpmn:outgoing>Flow_17txnun</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Activity_0ymoduq" name="запустити ракети по астероїду">
+      <bpmn:incoming>Flow_18qarj6</bpmn:incoming>
+      <bpmn:outgoing>Flow_186mb8y</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0acpiwh" sourceRef="Activity_0wwqqyg" targetRef="Activity_upload_rockets_with_robots" />
+    <bpmn:sequenceFlow id="Flow_17txnun" sourceRef="Activity_upload_rockets_with_robots" targetRef="Gateway_1ndje34" />
+    <bpmn:task id="Activity_rozpyl" name="роботи з ракет розпилюють астероїд">
+      <bpmn:incoming>Flow_186mb8y</bpmn:incoming>
+      <bpmn:outgoing>Flow_0m8urf8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_186mb8y" sourceRef="Activity_0ymoduq" targetRef="Activity_rozpyl" />
+    <bpmn:sequenceFlow id="Flow_0u3adr1" name="знищити?" sourceRef="Gateway_05tf4do" targetRef="Activity_build_rokets">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decisia == "znyschyty"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_07axu26" name="розпил" sourceRef="Gateway_05tf4do" targetRef="Activity_0wwqqyg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decisia == "rozpyl"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1i3ywts">
+      <bpmn:incoming>Flow_06zkzer</bpmn:incoming>
+      <bpmn:incoming>Flow_0m8urf8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1log3b2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1log3b2" sourceRef="Gateway_1i3ywts" targetRef="Event_the_end" />
+    <bpmn:sequenceFlow id="Flow_0m8urf8" sourceRef="Activity_rozpyl" targetRef="Gateway_1i3ywts" />
+    <bpmn:sequenceFlow id="Flow_0otn10u" sourceRef="Gateway_1ndje34" targetRef="Gateway_0a0efr7" />
+    <bpmn:sequenceFlow id="Flow_1pipr3l" sourceRef="Activity_prepare_zone" targetRef="Gateway_1ndje34" />
+    <bpmn:sequenceFlow id="Flow_0mmvqi1" sourceRef="Gateway_05tf4do" targetRef="Activity_prepare_zone" />
+    <bpmn:inclusiveGateway id="Gateway_1ndje34">
+      <bpmn:incoming>Flow_17txnun</bpmn:incoming>
+      <bpmn:incoming>Flow_1pipr3l</bpmn:incoming>
+      <bpmn:incoming>Flow_0x3u852</bpmn:incoming>
+      <bpmn:outgoing>Flow_0otn10u</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_0a0efr7">
+      <bpmn:incoming>Flow_0otn10u</bpmn:incoming>
+      <bpmn:outgoing>Flow_18qarj6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hfupyo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_18qarj6" name="розпил?" sourceRef="Gateway_0a0efr7" targetRef="Activity_0ymoduq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decisia == "rozpyl"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0hfupyo" name="знищити?" sourceRef="Gateway_0a0efr7" targetRef="Activity_destroi">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decisia == "znyschyty"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0khxkv3" sourceRef="Gateway_05tf4do" targetRef="Event_the_end">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decisia == "tormozymo"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:scriptTask id="Activity_build_rokets" name="збудувати ракети" scriptFormat="Groovy">
+      <bpmn:incoming>Flow_0u3adr1</bpmn:incoming>
+      <bpmn:outgoing>Flow_05ravrd</bpmn:outgoing>
+      <bpmn:script>Thread.sleep((long)(Math.random() * 100 + 1000 ))</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_0wwqqyg" name="збудувати ракети" scriptFormat="Groovy">
+      <bpmn:incoming>Flow_07axu26</bpmn:incoming>
+      <bpmn:outgoing>Flow_0acpiwh</bpmn:outgoing>
+      <bpmn:script>Thread.sleep((long)(Math.random() * 0))</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_prepare_zone" name="підготувати місце запуску" camunda:asyncBefore="true" scriptFormat="Groovy">
+      <bpmn:incoming>Flow_0mmvqi1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pipr3l</bpmn:outgoing>
+      <bpmn:script>(1..10).each{
+ println it
+}</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:inclusiveGateway id="Gateway_05tf4do">
+      <bpmn:incoming>Flow_0dsmrcn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0u3adr1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_07axu26</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0mmvqi1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0khxkv3</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="asteroid_padaje_na_zemliu">
+      <bpmndi:BPMNEdge id="Flow_0khxkv3_di" bpmnElement="Flow_0khxkv3">
+        <di:waypoint x="211" y="451" />
+        <di:waypoint x="320" y="580" />
+        <di:waypoint x="1220" y="560" />
+        <di:waypoint x="1347" y="449" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="762" y="552" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hfupyo_di" bpmnElement="Flow_0hfupyo">
+        <di:waypoint x="915" y="437" />
+        <di:waypoint x="1060" y="437" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="966" y="413" width="50" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18qarj6_di" bpmnElement="Flow_18qarj6">
+        <di:waypoint x="890" y="412" />
+        <di:waypoint x="890" y="240" />
+        <di:waypoint x="960" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="885" y="323" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mmvqi1_di" bpmnElement="Flow_0mmvqi1">
+        <di:waypoint x="200" y="412" />
+        <di:waypoint x="200" y="120" />
+        <di:waypoint x="570" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pipr3l_di" bpmnElement="Flow_1pipr3l">
+        <di:waypoint x="670" y="120" />
+        <di:waypoint x="780" y="120" />
+        <di:waypoint x="780" y="412" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0otn10u_di" bpmnElement="Flow_0otn10u">
+        <di:waypoint x="805" y="437" />
+        <di:waypoint x="865" y="437" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m8urf8_di" bpmnElement="Flow_0m8urf8">
+        <di:waypoint x="1200" y="240" />
+        <di:waypoint x="1230" y="240" />
+        <di:waypoint x="1230" y="412" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1log3b2_di" bpmnElement="Flow_1log3b2">
+        <di:waypoint x="1255" y="437" />
+        <di:waypoint x="1342" y="437" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07axu26_di" bpmnElement="Flow_07axu26">
+        <di:waypoint x="212" y="424" />
+        <di:waypoint x="390" y="240" />
+        <di:waypoint x="430" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="278" y="318" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0u3adr1_di" bpmnElement="Flow_0u3adr1">
+        <di:waypoint x="225" y="437" />
+        <di:waypoint x="430" y="437" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="235" y="419" width="50" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_186mb8y_di" bpmnElement="Flow_186mb8y">
+        <di:waypoint x="1060" y="240" />
+        <di:waypoint x="1100" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17txnun_di" bpmnElement="Flow_17txnun">
+        <di:waypoint x="690" y="240" />
+        <di:waypoint x="730" y="300" />
+        <di:waypoint x="773" y="419" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0acpiwh_di" bpmnElement="Flow_0acpiwh">
+        <di:waypoint x="530" y="240" />
+        <di:waypoint x="590" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dsmrcn_di" bpmnElement="Flow_0dsmrcn">
+        <di:waypoint x="148" y="437" />
+        <di:waypoint x="175" y="437" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05ravrd_di" bpmnElement="Flow_05ravrd">
+        <di:waypoint x="530" y="437" />
+        <di:waypoint x="590" y="437" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06zkzer_di" bpmnElement="Flow_06zkzer">
+        <di:waypoint x="1160" y="437" />
+        <di:waypoint x="1205" y="437" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0x3u852_di" bpmnElement="Flow_0x3u852">
+        <di:waypoint x="690" y="437" />
+        <di:waypoint x="755" y="437" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="112" y="419" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0165q6u_di" bpmnElement="Activity_upload_rockets_with_bombs" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <dc:Bounds x="590" y="397" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1bj9adf_di" bpmnElement="Event_the_end">
+        <dc:Bounds x="1342" y="419" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0z9kohg_di" bpmnElement="Activity_destroi" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <dc:Bounds x="1060" y="397" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1959ycs_di" bpmnElement="Activity_upload_rockets_with_robots">
+        <dc:Bounds x="590" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ymoduq_di" bpmnElement="Activity_0ymoduq">
+        <dc:Bounds x="960" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mreufq_di" bpmnElement="Activity_rozpyl">
+        <dc:Bounds x="1100" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1i3ywts_di" bpmnElement="Gateway_1i3ywts" isMarkerVisible="true">
+        <dc:Bounds x="1205" y="412" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_115fvds_di" bpmnElement="Gateway_1ndje34">
+        <dc:Bounds x="755" y="412" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0a0efr7_di" bpmnElement="Gateway_0a0efr7" isMarkerVisible="true">
+        <dc:Bounds x="865" y="412" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06n3i4p_di" bpmnElement="Activity_build_rokets" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <dc:Bounds x="430" y="397" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15wkudn_di" bpmnElement="Activity_0wwqqyg">
+        <dc:Bounds x="430" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wle2pg_di" bpmnElement="Activity_prepare_zone" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <dc:Bounds x="570" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1vsui21_di" bpmnElement="Gateway_05tf4do">
+        <dc:Bounds x="175" y="412" width="50" height="50" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
