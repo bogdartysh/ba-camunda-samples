@@ -1,0 +1,42 @@
+package com.github.bogdartysh.wheretogo22w.await;
+
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.test.assertions.bpmn.ProcessInstanceAssert;
+
+import static org.awaitility.Awaitility.await;
+
+public class AwaitingProcessInstanceAssert extends ProcessInstanceAssert {
+
+    AwaitingProcessInstanceAssert(ProcessEngine engine, ProcessInstance actual) {
+        super(engine, actual, ProcessInstanceAssert.class);
+    }
+
+    public AwaitingProcessInstanceAssert hasPassedInOrder(String... activityIds) {
+        await().ignoreExceptions().until(() -> super.hasPassedInOrder(activityIds) != null);
+
+        return this;
+    }
+
+    public AwaitingProcessInstanceAssert hasPassed(String... activityIds) {
+        await().ignoreExceptions().until(() -> super.hasPassed(activityIds) != null);
+
+        return this;
+    }
+
+    public AwaitingProcessInstanceAssert hasNotPassed(String... activityIds) {
+        super.hasNotPassed(activityIds);
+        return this;
+    }
+
+    public AwaitingProcessInstanceAssert isEnded() {
+        await().ignoreExceptions().until(() -> super.isEnded() != null);
+
+        return this;
+    }
+
+    public AwaitingProcessInstanceAssert isWaitingAt(String... activityIds) {
+        await().ignoreExceptions().until(() -> super.isWaitingAt(activityIds) != null);
+        return this;
+    }
+}
