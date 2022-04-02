@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1ojqiji" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="Process_176cl9y" name="euler  19 task" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1ieyx5c</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1ieyx5c" sourceRef="StartEvent_1" targetRef="Activity_1844v8c" />
+    <bpmn:scriptTask id="Activity_1844v8c" name="set cDate to 1900-01-01" scriptFormat="Groovy" camunda:resultVariable="cDate">
+      <bpmn:incoming>Flow_1ieyx5c</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z1v1kx</bpmn:outgoing>
+      <bpmn:script>java.time.LocalDate.parse("1900-01-07")</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0z1v1kx" sourceRef="Activity_1844v8c" targetRef="Activity_0bc8pak" />
+    <bpmn:scriptTask id="Activity_1gth2z2" name="set acc to 0" scriptFormat="Groovy" camunda:resultVariable="acc">
+      <bpmn:incoming>Flow_0kg3cfc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j2rk0f</bpmn:outgoing>
+      <bpmn:script>0</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:endEvent id="Event_1wy1pm0" name="The END">
+      <bpmn:incoming>Flow_182k9u7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_182k9u7" sourceRef="Activity_0z8n4yh" targetRef="Event_1wy1pm0" />
+    <bpmn:scriptTask id="Activity_0z8n4yh" name="print acc" scriptFormat="Groovy">
+      <bpmn:incoming>Flow_1qprzrp</bpmn:incoming>
+      <bpmn:outgoing>Flow_182k9u7</bpmn:outgoing>
+      <bpmn:script>println acc
+println cDate
+println endDate</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_0ek3fo1" name="add 1 days" scriptFormat="Groovy" camunda:resultVariable="cDate">
+      <bpmn:incoming>Flow_12xuf8s</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p8qvm3</bpmn:outgoing>
+      <bpmn:script>cDate.plusDays(1L)</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_0rsotca" name="inc acc" scriptFormat="Groovy" camunda:resultVariable="acc">
+      <bpmn:incoming>Flow_0mhv2x2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ahxw6h</bpmn:outgoing>
+      <bpmn:script>acc + 1</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0kg3cfc" sourceRef="Activity_0bc8pak" targetRef="Activity_1gth2z2" />
+    <bpmn:scriptTask id="Activity_0bc8pak" name="set endDate to 2000-12-31" scriptFormat="Groovy" camunda:resultVariable="endDate">
+      <bpmn:incoming>Flow_0z1v1kx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kg3cfc</bpmn:outgoing>
+      <bpmn:script>java.time.LocalDate.parse("2000-12-31")</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0ahxw6h" sourceRef="Activity_0rsotca" targetRef="Gateway_1bir5po" />
+    <bpmn:exclusiveGateway id="Gateway_0fnjozp" default="Flow_1f29p44">
+      <bpmn:incoming>Flow_1j2rk0f</bpmn:incoming>
+      <bpmn:incoming>Flow_0p8qvm3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1f29p44</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1qprzrp</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1f29p44" sourceRef="Gateway_0fnjozp" targetRef="Gateway_0mt6i4f" />
+    <bpmn:sequenceFlow id="Flow_1qprzrp" name="is cDate is after then endDate ?" sourceRef="Gateway_0fnjozp" targetRef="Activity_0z8n4yh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="Groovy">cDate.isAfter(endDate)</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1j2rk0f" sourceRef="Activity_1gth2z2" targetRef="Gateway_0fnjozp" />
+    <bpmn:sequenceFlow id="Flow_0p8qvm3" sourceRef="Activity_0ek3fo1" targetRef="Gateway_0fnjozp" />
+    <bpmn:exclusiveGateway id="Gateway_0mt6i4f" default="Flow_0x1qy6o">
+      <bpmn:incoming>Flow_1f29p44</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mhv2x2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0x1qy6o</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0mhv2x2" name="is Sunday and first day of month of XX c ? " sourceRef="Gateway_0mt6i4f" targetRef="Activity_0rsotca">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="Groovy">(cDate.getYear() &gt; 1900) &amp;&amp; cDate.getDayOfMonth().equals(1)  &amp;&amp; java.time.DayOfWeek.SUNDAY.equals(cDate.getDayOfWeek())</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1bir5po">
+      <bpmn:incoming>Flow_0x1qy6o</bpmn:incoming>
+      <bpmn:incoming>Flow_0ahxw6h</bpmn:incoming>
+      <bpmn:outgoing>Flow_12xuf8s</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_12xuf8s" sourceRef="Gateway_1bir5po" targetRef="Activity_0ek3fo1" />
+    <bpmn:sequenceFlow id="Flow_0x1qy6o" sourceRef="Gateway_0mt6i4f" targetRef="Gateway_1bir5po" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_176cl9y">
+      <bpmndi:BPMNEdge id="Flow_1ieyx5c_di" bpmnElement="Flow_1ieyx5c">
+        <di:waypoint x="188" y="310" />
+        <di:waypoint x="220" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z1v1kx_di" bpmnElement="Flow_0z1v1kx">
+        <di:waypoint x="320" y="310" />
+        <di:waypoint x="360" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kg3cfc_di" bpmnElement="Flow_0kg3cfc">
+        <di:waypoint x="460" y="310" />
+        <di:waypoint x="520" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j2rk0f_di" bpmnElement="Flow_1j2rk0f">
+        <di:waypoint x="620" y="310" />
+        <di:waypoint x="675" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_182k9u7_di" bpmnElement="Flow_182k9u7">
+        <di:waypoint x="1050" y="120" />
+        <di:waypoint x="1162" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qprzrp_di" bpmnElement="Flow_1qprzrp">
+        <di:waypoint x="705" y="290" />
+        <di:waypoint x="750" y="120" />
+        <di:waypoint x="950" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="771" y="136" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ahxw6h_di" bpmnElement="Flow_0ahxw6h">
+        <di:waypoint x="1160" y="230" />
+        <di:waypoint x="1360" y="230" />
+        <di:waypoint x="1392" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p8qvm3_di" bpmnElement="Flow_0p8qvm3">
+        <di:waypoint x="980" y="420" />
+        <di:waypoint x="730" y="420" />
+        <di:waypoint x="700" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1f29p44_di" bpmnElement="Flow_1f29p44">
+        <di:waypoint x="725" y="310" />
+        <di:waypoint x="875" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mhv2x2_di" bpmnElement="Flow_0mhv2x2">
+        <di:waypoint x="907" y="292" />
+        <di:waypoint x="930" y="230" />
+        <di:waypoint x="1060" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="941" y="245" width="85" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12xuf8s_di" bpmnElement="Flow_12xuf8s">
+        <di:waypoint x="1392" y="327" />
+        <di:waypoint x="1350" y="420" />
+        <di:waypoint x="1080" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0x1qy6o_di" bpmnElement="Flow_0x1qy6o">
+        <di:waypoint x="925" y="310" />
+        <di:waypoint x="1375" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="292" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_001g7a0_di" bpmnElement="Activity_1844v8c">
+        <dc:Bounds x="220" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xxraqp_di" bpmnElement="Activity_1gth2z2">
+        <dc:Bounds x="520" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p8lm7v_di" bpmnElement="Activity_0bc8pak">
+        <dc:Bounds x="360" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0fnjozp_di" bpmnElement="Gateway_0fnjozp" isMarkerVisible="true">
+        <dc:Bounds x="675" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0mt6i4f_di" bpmnElement="Gateway_0mt6i4f" isMarkerVisible="true">
+        <dc:Bounds x="875" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0hanyxu_di" bpmnElement="Activity_0z8n4yh">
+        <dc:Bounds x="950" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wy1pm0_di" bpmnElement="Event_1wy1pm0">
+        <dc:Bounds x="1162" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1177" y="143" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uegn9a_di" bpmnElement="Activity_0ek3fo1">
+        <dc:Bounds x="980" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0oi9myr_di" bpmnElement="Activity_0rsotca">
+        <dc:Bounds x="1060" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1bir5po_di" bpmnElement="Gateway_1bir5po" isMarkerVisible="true">
+        <dc:Bounds x="1375" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
